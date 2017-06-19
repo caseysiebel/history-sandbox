@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+<body>
+    <div id='container'>
+        <div data-link='square'>SQUARE</div>
+        <br/>
+        <div data-link='circle'>CIRCLE</div>
+        <br/>
+        <div id='content'></div>
+    </div>
+    <script>
+        const container = document.querySelector('#container')
+        const content= document.querySelector('#content')
+        container.addEventListener('click', (e) => {
+                let data = e.target.getAttribute('data-link'),
+                url = data
+            history.pushState(data, null, url) 
+            console.log(history, 'history')
+            fetch(`/${url}`)
+                .then(r => r.text())
+                .then(r => content.innerHTML = r)
+                .catch(err => console.error(err))
+        })
+        window.addEventListener('popstate', (e) => {
+            let shape = e.state
+            if (shape == null) return
+            content.innerHTML = shape
+        })
+    </script>
+</body>
+</html>
